@@ -3,7 +3,7 @@
 ## Scope and provenance
 
 This independent branch is based on Rotorflight 4.6.0 commit `118e9120260bb33f46df4f92052fb0e9fd4e9ebc`.
-It retains the Rotorflight flight-control/configuration layer and adds the AT32 hardware port. Board defaults reflect the Align T15 wiring used during development; other helicopters need their own configuration.
+It retains the Rotorflight flight-control/configuration layer and adds the AT32 hardware port. The target describes the board hardware. Motor pole counts, tail type, servo allocation and aircraft tuning are user settings and are not imposed by this firmware.
 
 Hardware used: BETAFPV F4 2–3S 20A AIO FC V1, AT32F435RGT7 (1MiB flash, default 288MHz), ICM42605, onboard UART ELRS, 16MiB SPI flash and Bluejay ESCs.
 The original Betaflight target name `BETAFPVF435` is retained. `AT32` is the MCU family; `F435` identifies the model. Do not select this firmware for the STM32F405 board variant.
@@ -17,21 +17,33 @@ Porting references:
 
 Original project licenses and vendor copyright notices remain in place. See [LICENSE](../LICENSE).
 
-## Default T15 connections
+## Board connections and neutral defaults
 
-| Function | Board connector | MCU / timer |
-|---|---|---|
-| Main motor / MOTOR1 | Physical ESC4 | PA2 / TMR2 CH3 |
-| Tail motor / MOTOR2 | Physical ESC2 | PB1 / TMR3 CH4 |
-| Swash servo1 | T1 | PA9 / TMR1 CH2 |
-| Swash servo2 | R1 | PA10 / TMR1 CH3 |
-| Swash servo3 | T6 | PC6 / TMR8 CH1 (AF3) |
-| Onboard ELRS | UART3 | PB10 TX / PB11 RX |
-| Battery voltage / total current | onboard ADC | PC2 / PC1 |
+| Board function | MCU / timer |
+|---|---|
+| Onboard ESC1 / MOTOR1 | PB0 / TMR3 CH3 |
+| Onboard ESC2 / MOTOR2 | PB1 / TMR3 CH4 |
+| Onboard ESC3 / MOTOR3 | PA3 / TMR2 CH4 |
+| Onboard ESC4 / MOTOR4 | PA2 / TMR2 CH3 |
+| T1 / UART1 TX | PA9 / TMR1 CH2 when remapped to PWM |
+| R1 / UART1 RX | PA10 / TMR1 CH3 when remapped to PWM |
+| T6 / UART6 TX | PC6 / TMR8 CH1 (AF3) when remapped to PWM |
+| Onboard ELRS / UART3 | PB10 TX / PB11 RX |
+| Battery voltage / total current | PC2 / PC1 |
 
-The TMR3 CH4 DShot output switches to CH3 indirect capture for bidirectional RPM reception. Do not allocate PB0/TMR3 CH3 as a concurrent extra output in this layout.
-Defaults use DShot300, bidirectional RPM, motorized tail, 12 main-motor poles and 6 tail-motor poles. Those pole counts were physically checked on the development T15 motors. They are configuration defaults, not universal values for this board.
-PWM servos use timers 1/8; motor timers are 2/3. DShot bitbang/burst defaults remain OFF for this wiring. Full aircraft settings and personal receiver binding data are not bundled with this repository.
+Default motor numbering follows the physical ESC labels. There are no assigned servo outputs, forced motor pole counts or forced motorized-tail mode. Normal Rotorflight aircraft defaults remain in effect; the target selects DShot300 for its onboard Bluejay ESC hardware. Bidirectional RPM is enabled by the user when configuring the aircraft. UART1 and UART6 TX are available until their pins are explicitly remapped.
+
+Configure motor/servo resources, tail type, pole counts, gearing and tuning for the actual helicopter. Remapping a UART pin to PWM requires releasing the corresponding serial resource. No personal aircraft settings are bundled.
+
+Native bidirectional DShot on a channel4 output uses channel3 of the same timer for indirect RPM capture: ESC2 therefore reserves TMR3 CH3 (ESC1), and ESC3 reserves TMR2 CH3 (ESC4). Those pairs cannot be used concurrently with this native capture method. Choose a non-conflicting assignment or a compatible bitbang/timer allocation; resource checks are retained. This is a timer/backend constraint, independent of aircraft model. Native bitbang/burst defaults remain OFF and can be configured through normal Rotorflight settings.
+
+## Board-default regression test
+
+```sh
+python src/test/test_betafpvf435_defaults.py --compiler clang
+```
+
+This host test uses the production timer table, resource lookup and motor/servo reset functions. It checks physical ESC numbering, absence of preset servo channels, preservation of motor pole counts/RPM choice/tail settings, and normal UART pin defaults. A local negative-control run also verified that the earlier aircraft-specific override fails this test.
 
 ## Build
 
@@ -52,11 +64,11 @@ On Windows, the validated build explicitly uses Git's shell:
 Output: `obj/rotorflight_4.6.0_BETAFPVF435.hex`.
 The local development build wrapper and workstation tool installation are not required to build this source tree. Other host platforms have not been validated in this project.
 
-The prepublication bench binary was built on 2026-11-04 at 13:20:03 with revision text `norevision`. Rebuilds can differ due to build time and Git revision metadata. Release assets include a SHA256 file for the distributed binary.
+Release assets include a SHA256 file. Rebuilds can differ due to build time and Git revision metadata. The initial port.1 bench binary contained aircraft-specific defaults; use the corrected board-generic release rather than treating that legacy asset as neutral board defaults.
 
 ## Validation record
 
-The publication snapshot has the same firmware code as the installed bench image. Documentation/ignore rules were added for publication.
+The board-generic revision removes the earlier aircraft-specific default overrides and restores the physical board connector map. It has its own build and host-default checks; older bench results below apply to the earlier driver checkpoint, not a physical retest of the new default mapping.
 Historical local validation included:
 
 - Maintained upstream host tests: 23 suites / 167 tests, 0 failures and 0 build-unavailable.
@@ -79,5 +91,5 @@ Some Rotorflight Configurator 2.3.0 builds recognize desktop USB ports only by S
 
 - 이 브랜치는 AT32F435 보드용입니다. STM32F405 버전과 구분하세요.
 - `BETAFPVF435`는 내부 타깃명이며, 배포 파일명에는 `AT32F435`를 함께 표시합니다.
-- T15용 기본 출력 배치이며 다른 기체에 사용할 때는 서보·모터·수신기 설정을 해당 기체에 맞춰야 합니다.
+- 특정 기체용 펌웨어가 아닙니다. ESC1~4는 보드 표기를 따르며, 서보 배치·모터 극수·테일 형식은 사용자가 설정합니다.
 - FC 펌웨어, Bluejay ESC 펌웨어, ELRS 수신기 펌웨어는 각각 별도입니다.

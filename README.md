@@ -1,6 +1,6 @@
 # Rotorflight for BETAFPV 20A / AT32F435
 
-This branch ports Rotorflight 4.6.0 to the **BETAFPV F4 2–3S 20A AIO FC V1 with AT32F435RGT7**, developed on an Align T15 with a motorized tail. It is an independent port, not an official Rotorflight target/release.
+This branch ports Rotorflight 4.6.0 to the **BETAFPV F4 2–3S 20A AIO FC V1 with AT32F435RGT7**, intended as board support for any appropriately configured Rotorflight helicopter. Aircraft settings are configured separately. It is an independent port, not an official Rotorflight target/release.
 
 - Target: `BETAFPVF435`; MCU: `AT32F435RGT7`; verified gyro: `ICM42605`.
 - [Board mapping, build instructions and validation scope](docs/AT32_BETAFPVF435.md)

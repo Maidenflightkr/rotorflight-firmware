@@ -4,7 +4,6 @@
   "target": "BETAFPVF435",
   "mcu": "AT32F435RGT7",
   "gyro": "ICM42605",
-  "bench_hex_sha256": "2e3098e16d1b2807cd5f53974ce4bd3cca75b67cbb02f22a252359580dbab825",
   "upstream_maintained_tests": {
     "suites": 23,
     "tests": 167,
@@ -48,5 +47,29 @@
     "boot_verified": true,
     "restart_verified": true
   },
-  "scope": "Historical local checks; portable runner and raw workstation reports not included in this initial publication; not an official Rotorflight release."
+  "scope": "Historical local checks; portable runner and raw workstation reports not included in this initial publication; not an official Rotorflight release.",
+  "legacy_bench_hex_sha256": "2e3098e16d1b2807cd5f53974ce4bd3cca75b67cbb02f22a252359580dbab825",
+  "board_generic_revision": {
+    "hex_sha256": "40154c8b3fb78f8be1aa052541a3704ae8368012170a94743f28c3b9cec80c30",
+    "kind": "BOARD_GENERIC_DEFAULTS",
+    "hardware_defaults": {
+      "esc_pins": [
+        "PB0",
+        "PB1",
+        "PA3",
+        "PA2"
+      ],
+      "servo_pins_assigned": false,
+      "onboard_esc_protocol": "DSHOT300",
+      "motor_poles": "Rotorflight default 0,0,0,0",
+      "tail_mode": "Rotorflight default VARIABLE",
+      "rpm_telemetry": "Rotorflight default OFF"
+    },
+    "board_default_regression": "PASS",
+    "old_aircraft_override_negative_control": "REJECTED",
+    "host_regressions": "PASS",
+    "arm_build_and_static_image_check": "PASS",
+    "hardware_flashed": false
+  },
+  "installation_scope": "Installation/readback fields refer to the earlier bench binary, not the board-generic revision."
 }
