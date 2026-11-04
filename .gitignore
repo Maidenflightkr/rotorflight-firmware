@@ -50,3 +50,8 @@ ubuntu*.log
 
 # EEPROM image file (created by SITL)
 eeprom.bin
+
+# Local dependency and Python cache files
+*.d
+__pycache__/
+*.pyc

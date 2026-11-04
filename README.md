@@ -1,3 +1,16 @@
+# Rotorflight for BETAFPV 20A / AT32F435
+
+This branch ports Rotorflight 4.6.0 to the **BETAFPV F4 2–3S 20A AIO FC V1 with AT32F435RGT7**, developed on an Align T15 with a motorized tail. It is an independent port, not an official Rotorflight target/release.
+
+- Target: `BETAFPVF435`; MCU: `AT32F435RGT7`; verified gyro: `ICM42605`.
+- [Board mapping, build instructions and validation scope](docs/AT32_BETAFPVF435.md)
+- [Machine-readable validation summary](docs/AT32_validation_summary.json)
+- Firmware downloads are published separately under this fork's Releases.
+
+**한국어:** BETAFPV 20A AIO의 AT32F435 버전에서 Rotorflight를 실행하기 위한 포팅입니다. 아래 공식 Rotorflight 소개와 이 포크의 지원 범위는 구별해 주세요. 빌드 방법·핀맵·검증 범위는 위 문서에 정리했습니다.
+
+---
+
 # Rotorflight
 
 [![Website](https://img.shields.io/badge/Website-rotorflight.org-2ea44f)](https://www.rotorflight.org/)

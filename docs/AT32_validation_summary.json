@@ -1,0 +1,52 @@
+{
+  "date": "2026-11-04",
+  "base_commit": "118e9120260bb33f46df4f92052fb0e9fd4e9ebc",
+  "target": "BETAFPVF435",
+  "mcu": "AT32F435RGT7",
+  "gyro": "ICM42605",
+  "bench_hex_sha256": "2e3098e16d1b2807cd5f53974ce4bd3cca75b67cbb02f22a252359580dbab825",
+  "upstream_maintained_tests": {
+    "suites": 23,
+    "tests": 167,
+    "failed": 0,
+    "build_unavailable": 0
+  },
+  "host_regressions": "PASS",
+  "deliberate_faults_detected": 17,
+  "diagnostics": {
+    "raw": 320,
+    "unresolved": 0,
+    "dispositions": {
+      "EXPECTED_MMIO_ACCESS": 281,
+      "REVIEWED_REDUNDANT_STORE": 19,
+      "BOUNDARY_FIXED_ARRAY_FLOW_REVIEWED": 2,
+      "TYPED_EVENT_ALIAS_VALIDATED": 6,
+      "DEVICE_WRITE_MODEL_LIMITATION_VALIDATED": 7,
+      "NONZERO_DIVISOR_INVARIANT_VALIDATED": 1,
+      "TWO_PASS_INITIALIZATION_VALIDATED": 1,
+      "HEADER_INITIALIZATION_VALIDATED": 1,
+      "PACKED_PAYLOAD_INITIALIZATION_VALIDATED": 1,
+      "RECEIVER_STATE_INVARIANT_VALIDATED": 1
+    },
+    "previous_warnings_fixed": 5
+  },
+  "builds": {
+    "BETAFPVF435": "PASS",
+    "STM32F405": "PASS",
+    "fresh_official_base_full_patch": "PASS"
+  },
+  "reproducibility": {
+    "changed_files_matched": 253,
+    "code_and_data_identical_except_compile_time": true,
+    "different_time_literal_bytes": 6,
+    "clean_hex_sha256": "d438a343a1904fadcab159b1de695eea4cf2c571e4455598336119c614c0cdc3"
+  },
+  "installation": {
+    "independent_readback": "PASS",
+    "hex_data_bytes_compared": 567852,
+    "mismatches": 0,
+    "boot_verified": true,
+    "restart_verified": true
+  },
+  "scope": "Historical local checks; portable runner and raw workstation reports not included in this initial publication; not an official Rotorflight release."
+}
